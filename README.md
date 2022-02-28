@@ -6,3 +6,5 @@ Ela verifica de acordo com o define (TERMO_PA ou TERMO_PG) se a sequência infor
 Segue abaixo exemplo bem simples.
 
 Como parâmetro no construtor da classe deve ser informado a sequência de números como um array.
+
+Funciona na versão 7.4 do PHP.
