@@ -1,5 +1,7 @@
 <?php
 
+namespace lib\Usodefines;
+
 /**
  * Define o tipo de Progressão.
  */

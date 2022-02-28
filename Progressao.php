@@ -3,25 +3,37 @@
 require_once("Auxiliar.php");
 require_once("defines.php");
 
+
 class Progressao extends Auxiliar
 {
 
     // Recebe os termos da Progressao.
     private $term = [];
 
+    // Recebe o valor da razão dos termos.
+    private $razao;
+
     /**
      * Construtor da class inicializa os termos da Progressao.
+     * Como parâmetro recebe os termos do array.
+     * @param $termos (array)
      */
 
     public function __construct($termos = [])
     {
         $this->term = $termos;
+        if ($this->term[0] != "" || $this->term[0] != "")
+            $this->razao = $this->term[1] - $this->term[0];
     }
 
-    public function processar($param = TERMO_PA)
+    /**
+     * Construtor da class inicializa os termos da Progressao.
+     * @param (int)
+     */
+    public function verificarTipoProgressao($param = TERMO_PA)
     {
         try {
-
+            Auxiliar::isArray($param);
             switch ($param) {
                 case 1:
                     $count = count($this->verificarPA());
@@ -40,8 +52,7 @@ class Progressao extends Auxiliar
     private function verificarPA()
     {
         Auxiliar::isArray($this->term);
-        // $razao = $this->term[1] - $this->term[0];
-        $razao = Auxiliar::calculaRazaoPa($this->term[0],$this->term[1]);
+        $razao = Auxiliar::calculaRazaoPa($this->term[0], $this->term[1]);
         for ($a = 0; $a <= count($this->term); $a++) {
             if (isset($this->term[$a + 1])) {
                 Auxiliar::isNumber($this->term[$a + 1]);
@@ -92,9 +103,13 @@ class Progressao extends Auxiliar
         $calculo = (($this->term[0] + $ultimoTermo) * $nTermos) / 2;
         return $calculo;
     }
-
-    public function calculaNtermo(){
-
+    /**
+     * Calcula o eNesimo termo da PA.
+     */
+    public function calculaNtermo($nTermo)
+    {
+        $calculo = $this->term[0] + ($nTermo - 1) * $this->razao;
+        return $calculo;
     }
 
     /**
@@ -114,15 +129,12 @@ class Progressao extends Auxiliar
 
 
 
-// $objeto = new Progressao([2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40]);
-$objeto = new Progressao([0, 1, 2, 3, 4,5]);
-$merges = $objeto->processar(TERMO_PA);
+$objeto = new Progressao(['']);
+$tipoProgressao = $objeto->verificarTipoProgressao(TERMO_PA);
 $tipo = TERMO_PA;
 $verificarTipo = $tipo == 1 ? "PA" : "PG";
-if ($merges == 1) {
-    echo "Eh uma " . $verificarTipo;
+if ($tipoProgressao == 1) {
+    echo "É uma " . $verificarTipo;
 } else {
-    echo "nao eh uma " . $verificarTipo;
-};
-
-echo "<BR>soma dos termos eh " . $objeto->somaTermosPA();
+    echo "Não é uma " . $verificarTipo;
+}
